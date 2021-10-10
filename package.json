@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "server:debug": "nodemon --inspect --inspect-brk server.js",
+    "test:server-debug": "node --inspect --inspect-brk=localhost:9339 ./node_modules/jest/bin/jest.js  --forceExit --detectOpenHandles --maxWorkers=1"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -13,6 +15,7 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
+    "nodemon": "^2.0.13",
     "react": "^17.0.2"
   }
 }
