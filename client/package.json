@@ -69,6 +69,11 @@
       "last 1 safari version"
     ]
   },
+  "proxy":{
+    "/*":{
+      "target":"http://localhost:3001"
+    }
+  },
   "devDependencies": {
     "@storybook/addon-actions": "^6.3.8",
     "@storybook/addon-essentials": "^6.3.8",
