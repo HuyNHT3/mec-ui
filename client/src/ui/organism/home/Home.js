@@ -1,15 +1,10 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import './Home.css';
+import ReactTrapButton from '../../atom/react-trap-button/ReactTrapButton';
+import {Link} from "react-router-dom";
 const Home = ({ ...rest }) => {
-    var arg = {
-        expand: "lg",
-        variant: "light",
-        bg: "dark",
-        style: "HomeHeader",
-        color: "Branch",
-        title: "Strategies For English Certification Exams"
-    }
+    var arg = { label: "Login", style: "HomeLoginButton" };
     return (
         <div>
             <Card className="Homebody">
@@ -17,11 +12,11 @@ const Home = ({ ...rest }) => {
                     Strategies For English Certification Exams
                 </Card.Header>
                 <Card.Body>
-                    <Card.Title>Special title treatment</Card.Title>
+                    <Card.Title className="CardTitleColor">YOU MUST BE LOGGED IN</Card.Title>
                     <Card.Text>
-                        <div>
-                            With supporting text below as a natural lead-in to additional content.
-                        </div>
+                    <Link to="/Login">
+                        <ReactTrapButton {...arg} />
+                    </Link>
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="HomeHeaderFooterColor" style={{ "text-align": "center" }}>
