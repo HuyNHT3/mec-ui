@@ -1,12 +1,19 @@
 import './App.css';
 import { React, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoadingSpinner from './ui/atom/spinner/LoadingSpinner';
 const Login = lazy(() => import('./ui/organism/login/Login'));
 const Home = lazy(() => import('./ui/organism/home/Home'));
+const spinnerArgs = {
+  animation: "border"
+}
 function App() {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div className="SpinnerContainer">
+          <LoadingSpinner {...spinnerArgs}/>
+        </div>}>
         <Routes>
           <Route path="/"
             element={

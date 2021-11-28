@@ -4,3 +4,10 @@
     border:0px;
     color: #4D547C;
 }
+.CardTitleColor{
+    color:#001F8E;
+    font-size:28px;
+    font-weight: bolder;
+    margin-top:5%;
+    margin-bottom:1%
+}
