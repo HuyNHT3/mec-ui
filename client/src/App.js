@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import LoadingSpinner from './ui/atom/spinner/LoadingSpinner';
 const Login = lazy(() => import('./ui/organism/login/Login'));
 const Home = lazy(() => import('./ui/organism/home/Home'));
-const ServiceStation = lazy(() => import('./ui/organism/services-page/ServiceStation'));
+// const ServiceStation = lazy(() => import('./ui/organism/services-page/ServiceStation'));
 const spinnerArgs = {
   animation: "border"
 }
@@ -27,7 +27,8 @@ function App() {
           <Route path="/Services"
             element={
               <div className="App">
-                <ServiceStation />
+                {/* <ServiceStation /> */}
+                Fix bug service station not show
               </div>} />
         </Routes>
       </Suspense>
