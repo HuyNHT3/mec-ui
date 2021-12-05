@@ -3,7 +3,8 @@ import Banner from '../../atom/banner/Banner';
 const ServiceStation = ({ ...rest }) => {
     return (
         <div>
-            <Banner />
+            {/* <Banner /> */}
+            test if it doesn't show
         </div>
     );
 }
