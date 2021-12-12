@@ -10,7 +10,7 @@ const ListOfServices = (props) => {
     const {serviceData} = props;
     return (
         <Container>
-            <Row md="5" xs="1">
+            <Row sm="2" md="3" xs="1" lg="4" xl="5">
                 {serviceData.map((serviceItem,index) => {
                     return (
                         <Col key={index}>
