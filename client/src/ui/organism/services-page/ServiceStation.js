@@ -23,6 +23,7 @@ const ServiceStation = ({ ...rest }) => {
             <Banner />
             <div className="ServiceStationBody">
                 <div className="ServiceContent">
+                    <p>Fixing mobile</p>
                     <ListOfServices serviceData={serviceData} />
                 </div>
             </div>
