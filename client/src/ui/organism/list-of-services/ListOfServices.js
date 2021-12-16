@@ -18,7 +18,7 @@ const ListOfServices = (props) => {
                                 <Card.Header>{serviceItem.header}</Card.Header>
                                 <Card.Body>
                                     <Card.Text>
-                                        <Image style={{height:'10%'}} src={"./service-images/"+serviceItem.image} fluid />
+                                        {/* <Image style={{height:'10%'}} src={"./service-images/"+serviceItem.image} fluid /> */}
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
