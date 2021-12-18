@@ -1,0 +1,13 @@
+.ServiceStationBackColor{
+    background: #f0eeee;
+}
+.ServiceStationBody{
+    width: 80vw;
+    background:white ;
+    margin:auto;
+    padding-top: 3%;
+    padding-left: 3%;
+}
+.ServiceContent div[name="Box"]{
+    float:left;
+}
