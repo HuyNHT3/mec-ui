@@ -1,13 +1,13 @@
-.Homebody { min-height: 100vh; }
-.HomeHeaderFooterColor{
-    background-color: #DBD6D6;
-    border:0px;
-    color: #4D547C;
+.ServiceStationBackColor{
+    background: #f0eeee;
 }
-.CardTitleColor{
-    color:#001F8E;
-    font-size:28px;
-    font-weight: bolder;
-    margin-top:5%;
-    margin-bottom:1%
+.ServiceStationBody{
+    width: 80vw;
+    background:white ;
+    margin:auto;
+    padding-top: 3%;
+    padding-left: 3%;
+}
+.ServiceContent div[name="Box"]{
+    float:left;
 }
