@@ -23,6 +23,7 @@ if (process.env.NODE_ENV !== "local") {
     res.sendFile(path.resolve(__dirname, "build", "index.html"))
   );
 }
+console.log(process.env.NODE_ENV);
 app.get("/health", (_req, res) => res.send(200));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
