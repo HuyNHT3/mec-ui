@@ -22,7 +22,6 @@ const SettingBox = (props) => {
             </Offcanvas.Header>
             <Offcanvas.Body>
                 <OptionList />
-                <StatusAlert serverConectionState={serverConectionState} handleCloseAlert={handleCloseAlert} />
             </Offcanvas.Body>
         </Offcanvas>
     );

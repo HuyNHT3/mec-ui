@@ -4,15 +4,13 @@ import {
     Button
 } from 'react-bootstrap';
 const StatusAlert = (props) => {
-    const { serverConectionState, handleCloseAlert } = props;
-    console.log()
+    const { openCloseAlert, handleCloseAlert,title,status } = props;
+    const variant=status===true?"success":"danger";
     return (
-        <Alert show={serverConectionState.state} variant="success">
+        <Alert show={openCloseAlert} variant={variant}>
             <Alert.Heading>How's it going?!</Alert.Heading>
             <p>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget
-                lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
-                fermentum.
+                {title}
             </p>
             <hr />
             <div className="d-flex justify-content-end">
