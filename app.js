@@ -18,6 +18,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(users);
 //app.use(express.static(path.join(__dirname, "build")));
+app.get("*", (_req, res) =>
+res.sendFile(path.resolve(__dirname, "build", "index.html"));
 if (process.env.NODE_ENV !== "local") {
   app.get("*", (_req, res) =>
     res.sendFile(path.resolve(__dirname, "build", "index.html"))
