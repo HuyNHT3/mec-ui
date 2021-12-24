@@ -2,7 +2,8 @@ import { React } from 'react';
 import OptionList from '../option-list/OptionList';
 import {
     Offcanvas,
-} from 'react-bootstrap'
+} from 'react-bootstrap';
+
 const SettingBox = (props) => {
     const { show, handleClose } = props
     return (
