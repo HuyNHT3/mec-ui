@@ -7,21 +7,14 @@ var logger = require('morgan');
 
 var app = express();
 
-var users = require('./routes/users');
-/*npm run server*/
-var port = process.env.PORT || '3002';
-app.listen(port);
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-if (process.env.NODE_ENV === "local") {
-  app.use(users);
-}
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "build")));
+
 app.get("/health", (_req, res) => res.send(200));
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
