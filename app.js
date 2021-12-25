@@ -13,9 +13,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "client/public")));
 app.get("*", (_req, res) =>
-  res.sendFile(path.resolve(__dirname, "client/build", "index.html"))
+  res.sendFile(path.resolve(__dirname, "client/public", "index.html"))
 );
 app.get("/health", (_req, res) => res.send(200));
 // catch 404 and forward to error handler
