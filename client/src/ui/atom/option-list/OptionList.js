@@ -1,5 +1,5 @@
 import { React } from 'react';
-import { Power, PersonPlus, PersonRolodex} from 'react-bootstrap-icons';
+import { Power, PersonPlus, PersonRolodex } from 'react-bootstrap-icons';
 import { Link } from "react-router-dom";
 import ListGroup from 'react-bootstrap/ListGroup';
 import ServerStatusAlert from '../../../features/service-station/ServerStatusAlert';

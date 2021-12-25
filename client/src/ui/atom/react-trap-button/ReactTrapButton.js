@@ -1,11 +1,11 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './ReactTrapButton.css'
-const ReactTrapButton = ({ label,variant,style,...rest }) => {
+const ReactTrapButton = ({ label, variant, style, ...rest }) => {
     return (
         <button
-        className={style}
-        variant={variant}>
+            className={style}
+            variant={variant}>
             {label}
         </button>
     );

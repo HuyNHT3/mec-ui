@@ -9,7 +9,7 @@ const Login = ({ ...rest }) => {
         <Card className="box-shadow">
             <Card.Body>
                 <Card.Title>
-                    <VdcLogo className="logo" imagePath="VdcHomeLogo"/>
+                    <VdcLogo className="logo" imagePath="VdcHomeLogo" />
                 </Card.Title>
                 <Card.Text>
                     <ReactTrapForm />
