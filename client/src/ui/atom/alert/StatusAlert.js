@@ -8,7 +8,7 @@ const StatusAlert = (props) => {
     const variant=status===true?"success":"danger";
     return (
         <Alert show={openCloseAlert} variant={variant}>
-            <Alert.Heading>How's it going?!</Alert.Heading>
+            <Alert.Heading>Checking Server Connection</Alert.Heading>
             <p>
                 {title}
             </p>
