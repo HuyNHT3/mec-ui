@@ -30,9 +30,6 @@ function App() {
               <div className="App">
                 <ServiceStation />
               </div>} />
-          {/* <Route path="/ServerCheckUp"
-            element={<ServerCheckUp />}
-          /> */}
         </Routes>
       </Suspense>
     </Router>
