@@ -43,7 +43,7 @@ function App() {
                   handleCloseAlert={false}
                   title='You must login now!'
                   description='Please return to the home page and do a login'
-                  hasUserData={false}
+                  hasCloseButton={false}
                   status={false}
                 />
                 <Link to='/'>

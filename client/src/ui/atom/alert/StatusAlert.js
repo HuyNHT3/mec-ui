@@ -10,7 +10,7 @@ const StatusAlert = (
         handleCloseAlert,
         title,
         description,
-        hasUserData,
+        hasCloseButton,
         status
     }) => {
 
@@ -24,7 +24,7 @@ const StatusAlert = (
                 {description}
             </p>
             <div className="d-flex justify-content-end">
-                {!!hasUserData && (
+                {!!hasCloseButton && (
                     <>
                         <hr />
                         <Button

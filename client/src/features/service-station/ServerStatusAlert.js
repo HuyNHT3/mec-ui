@@ -19,6 +19,7 @@ const ServerStatusAlert = () => {
             <StatusAlert
                 openCloseAlert={openCloseAlert}
                 handleCloseAlert={handleCloseAlert}
+                hasCloseButton={true}
                 title={contentConection}
                 status={status} />
         </>
