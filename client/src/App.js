@@ -1,15 +1,18 @@
 import './App.css';
 import { React, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import StatusAlert from './ui/atom/alert/StatusAlert';
 import LoadingSpinner from './ui/atom/spinner/LoadingSpinner';
-// import ServerCheckUp from './features/bff-server/ServerCheckUp';
+import ReactTrapButton from './ui/atom/react-trap-button/ReactTrapButton';
 const Login = lazy(() => import('./ui/organism/login/Login'));
 const Home = lazy(() => import('./ui/organism/home/Home'));
-const ServiceStation = lazy(() => import('./features/service-station/ServiceStation'));
+const Navigator = lazy(() => import('./features/navigator/Navigator'));
 const spinnerArgs = {
   animation: "border"
 }
 function App() {
+  
   return (
     <Router>
       <Suspense fallback={
@@ -28,11 +31,25 @@ function App() {
           <Route path="/Services"
             element={
               <div className="App">
-                <ServiceStation />
+                <Navigator
+                  isServiceStation={true}
+                />
               </div>} />
-          {/* <Route path="/ServerCheckUp"
-            element={<ServerCheckUp />}
-          /> */}
+          <Route path="/Authentication"
+            element={
+              <div className="App">
+                <StatusAlert
+                  openCloseAlert={true}
+                  handleCloseAlert={false}
+                  title='You must login now!'
+                  description='Please return to the home page and do a login'
+                  hasUserData={false}
+                  status={false}
+                />
+                <Link to='/'>
+                  <ReactTrapButton {...{ label: 'Go To Login Page' }} />
+                </Link>
+              </div>} />
         </Routes>
       </Suspense>
     </Router>

@@ -3,7 +3,7 @@ import Banner from '../../ui/atom/banner/Banner';
 import Footer from '../../ui/atom/footer/Footer';
 import ListOfServices from '../../ui/organism/list-of-services/ListOfServices';
 import './ServiceStation.css';
-const ServiceStation = ({ ...rest }) => {
+const ServiceStation = () => {
     const serviceData = [
         {
             header: "GOOGLE DRIVE",

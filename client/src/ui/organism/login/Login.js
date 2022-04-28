@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactTrapForm from '../logn-form/ReactTrapForm';
 import VdcLogo from '../../atom/logo/VdcLogo'
 import './Login.css'
-const Login = ({ ...rest }) => {
+const Login = () => {
     return (
         <Card className="box-shadow">
             <Card.Body>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import ReactTrapButton from '../../atom/react-trap-button/ReactTrapButton';
-import GoogleAuthenticate from '../../../features/google-authenticate/GoogleAuthenticate';
+import Navigator from '../../../features/navigator/Navigator';
 import './ReactTrapForm.css';
 const ReactTrapForm = ({ ...rest }) => {
     return (
@@ -13,9 +13,9 @@ const ReactTrapForm = ({ ...rest }) => {
                 <Form.Control type="password" placeholder="Password" />
             </Form.Group>
             <ReactTrapButton {...{ label: "Login", style: "HomeLoginButton" }} />
-            <hr/>
+            <hr />
             <div className="GoogleButton">
-            <GoogleAuthenticate />
+                <Navigator isGoogleAuthenticate={true} />
             </div>
         </Form>
     );
