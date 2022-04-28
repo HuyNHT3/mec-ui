@@ -4,12 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactTrapForm from '../logn-form/ReactTrapForm';
 import VdcLogo from '../../atom/logo/VdcLogo'
 import './Login.css'
-const Login = ({ ...rest }) => {
+const Login = () => {
     return (
         <Card className="box-shadow">
             <Card.Body>
                 <Card.Title>
-                    <VdcLogo className="logo" imagePath="VdcHomeLogo"/>
+                    <VdcLogo className="logo" imagePath="VdcHomeLogo" />
                 </Card.Title>
                 <Card.Text>
                     <ReactTrapForm />
