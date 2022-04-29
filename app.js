@@ -13,9 +13,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "build")));
 app.get("*", (_req, res) =>
-  res.sendFile(path.resolve(__dirname, "client/build", "index.html"))
+  res.sendFile(path.resolve(__dirname, "build", "index.html"))
 );
 app.get("/health", (_req, res) => res.send(200));
 app.get("/gg-logout", (_req, res) => res.redirect(307,'https://accounts.google.com/Logout?hl=vi&timeStmp=1641118512&secTok=.AG5fkS-Ve9gUe2ABTFEEq8k0Jdam9H9Jsg&ec=GAdAAQ'));
