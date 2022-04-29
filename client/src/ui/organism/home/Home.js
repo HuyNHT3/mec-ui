@@ -3,7 +3,6 @@ import Card from 'react-bootstrap/Card';
 import Navigator from '../../../features/navigator/Navigator';
 import './Home.css';
 const Home = () => {
-    console.log(process.env.REACT_APP_ENV);
     return (
         <div>
             <Card className="Homebody">
