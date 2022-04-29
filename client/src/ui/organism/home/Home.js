@@ -1,10 +1,9 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import Navigator from '../../../features/navigator/Navigator';
 import './Home.css';
-import ReactTrapButton from '../../atom/react-trap-button/ReactTrapButton';
-import {Link} from "react-router-dom";
-const Home = ({ ...rest }) => {
-    var arg = { label: "Login", style: "HomeLoginButton" };
+const Home = () => {
+    console.log(process.env.REACT_APP_ENV);
     return (
         <div>
             <Card className="Homebody">
@@ -14,9 +13,7 @@ const Home = ({ ...rest }) => {
                 <Card.Body>
                     <Card.Title className="CardTitleColor">YOU MUST BE LOGGED IN</Card.Title>
                     <Card.Text>
-                    <Link to="/Login">
-                        <ReactTrapButton {...arg} />
-                    </Link>
+                        <Navigator isHomePage={true} />
                     </Card.Text>
                 </Card.Body>
                 <Card.Footer className="HomeHeaderFooterColor" style={{ "text-align": "center" }}>

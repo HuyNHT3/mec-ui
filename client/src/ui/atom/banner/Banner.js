@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import './Banner.css';
 import { PersonCircle, Gear } from 'react-bootstrap-icons';
+import { GetGAUserData } from '../../../utils/storage';
 import {
     Navbar,
     Container,
@@ -8,6 +9,7 @@ import {
 } from 'react-bootstrap'
 import SettingBox from '../setting-box/SettingBox';
 const Banner = ({ ...rest }) => {
+    const userInfo = GetGAUserData();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -19,7 +21,7 @@ const Banner = ({ ...rest }) => {
                     <Navbar.Collapse className="justify-content-end">
                         <Navbar.Text style={{ "color": "white", "font-size": "12pt" }}>
                             <PersonCircle color="white" size={30} />
-                            <span> N.H.T.Huy </span>
+                            <span> {userInfo?.Lu?.tf} </span>
                             <Button onClick={handleShow} variant="danger">
                                 <Gear color="white" size={30} />
                             </Button>
