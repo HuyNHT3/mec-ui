@@ -74,8 +74,8 @@
   },
   "Ms. Hồng": {
     "Đan": [
-      { "ngay": "T6", "ngay_thang": "23/10", "gio": "5.00 PM - 7.00 PM" },
-      { "ngay": "CN", "ngay_thang": "25/10", "gio": "5.00 PM - 7.00 PM" }
+      { "ngay": "T5", "ngay_thang": "22/10", "gio": "7.00 PM - 9.00 PM" },
+      { "ngay": "T6", "ngay_thang": "23/10", "gio": "5.00 PM - 7.00 PM" }
     ],
     "Linh Chi": [
       { "ngay": "T7", "ngay_thang": "24/10", "gio": "3.00 PM - 5.00 PM" },
@@ -136,6 +136,15 @@
     "Nhật My": [
       { "ngay": "T4", "ngay_thang": "21/10", "gio": "6.00 PM - 8.00 PM" },
       { "ngay": "T6", "ngay_thang": "23/10", "gio": "5.00 PM - 7.00 PM" }
+    ]
+  },
+  "Mr. Khang": {
+    "Thảo Vy": [
+      { "ngay": "CN", "ngay_thang": "25/10", "gio": "6.00 PM - 8.00 PM" }
+    ],
+    "Luân Thành": [
+      { "ngay": "T2", "ngay_thang": "19/10", "gio": "7.00 PM - 9.00 PM" },
+      { "ngay": "T7", "ngay_thang": "24/10", "gio": "7.00 PM - 9.00 PM" }
     ]
   }
 }
