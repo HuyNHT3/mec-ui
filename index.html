@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEC - Lịch Giảng Viên & Học Viên (Dạng Bảng)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header Navigation -->
+    <header class="bg-indigo-700 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+                <h1 class="text-xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-table-list text-indigo-300"></i>
+                    Bảng Lịch Dạy & Học MEC
+                </h1>
+                <p class="text-xs text-indigo-200 mt-0.5">Danh sách chi tiết theo bảng quản lý Giảng viên - Học viên</p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <span id="loadBadge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-800/80 text-indigo-200 border border-indigo-500/30">
+                    <i class="fa-solid fa-spinner fa-spin text-xs"></i> Đang nạp analyzed_result.json...
+                </span>
+                <button onclick="loadScheduleData()" title="Nạp lại dữ liệu từ analyzed_result.json" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium px-3 py-1.5 rounded-lg border border-indigo-400/40 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrows-rotate"></i> Nạp lại
+                </button>
+                <button onclick="exportCSV()" title="Xuất dữ liệu dạng CSV" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-csv"></i> Xuất CSV
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex-1 w-full flex flex-col gap-4">
+
+        <!-- Error Alert -->
+        <div id="errorAlert" class="hidden rounded-xl p-4 text-xs flex items-start gap-3 bg-red-50 border border-red-200 text-red-800">
+            <i class="fa-solid fa-triangle-exclamation text-base text-red-600 mt-0.5"></i>
+            <div class="flex-1" id="errorMessage"></div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+                <div class="p-2.5 bg-blue-50 text-blue-600 rounded-lg text-lg"><i class="fa-solid fa-calendar-days"></i></div>
+                <div>
+                    <div class="text-[11px] text-slate-500 font-medium">Tổng số buổi dạy</div>
+                    <div id="statTotalSessions" class="text-xl font-bold text-slate-800">--</div>
+                </div>
+            </div>
+            <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+                <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-lg text-lg"><i class="fa-solid fa-chalkboard-user"></i></div>
+                <div>
+                    <div class="text-[11px] text-slate-500 font-medium">Giảng viên</div>
+                    <div id="statTotalTeachers" class="text-xl font-bold text-slate-800">--</div>
+                </div>
+            </div>
+            <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+                <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-lg text-lg"><i class="fa-solid fa-user-graduate"></i></div>
+                <div>
+                    <div class="text-[11px] text-slate-500 font-medium">Học viên</div>
+                    <div id="statTotalStudents" class="text-xl font-bold text-slate-800">--</div>
+                </div>
+            </div>
+            <div class="bg-white p-3.5 rounded-xl shadow-sm border border-slate-200 flex items-center gap-3">
+                <div class="p-2.5 bg-amber-50 text-amber-600 rounded-lg text-lg"><i class="fa-solid fa-fire"></i></div>
+                <div>
+                    <div class="text-[11px] text-slate-500 font-medium">Cặp học nhiều nhất</div>
+                    <div id="statMaxDensity" class="text-xs font-bold text-slate-800 truncate max-w-[150px]">--</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-2">
+                <h2 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-sliders text-indigo-500"></i> Bộ Lọc Tìm Kiếm Dữ Liệu
+                </h2>
+                <div class="flex items-center gap-2">
+                    <button onclick="resetFilters()" class="text-xs text-slate-500 hover:text-red-600 font-medium transition">
+                        <i class="fa-solid fa-rotate-left"></i> Đặt lại bộ lọc
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Giảng viên</label>
+                    <select id="filterTeacher" onchange="applyFiltersAndRender()" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="ALL">-- Tất cả Giảng viên --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Học viên</label>
+                    <select id="filterStudent" onchange="applyFiltersAndRender()" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="ALL">-- Tất cả Học viên --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Thứ trong tuần</label>
+                    <select id="filterDay" onchange="applyFiltersAndRender()" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="ALL">-- Tất cả các Thứ --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Khung giờ</label>
+                    <select id="filterShift" onchange="applyFiltersAndRender()" class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="ALL">-- Tất cả Khung giờ --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tìm kiếm từ khóa</label>
+                    <div class="relative">
+                        <input type="text" id="filterKeyword" oninput="applyFiltersAndRender()" placeholder="Tên, ngày, giờ..." class="w-full text-xs bg-white border border-slate-300 rounded-lg pl-7 pr-2 py-1.5 focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Data Table Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col overflow-hidden">
+            <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/50">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-800">Danh Sách Lịch Học Chi Tiết</h3>
+                    <p class="text-[11px] text-slate-500">Hiển thị lịch học tương ứng theo bộ lọc đã chọn</p>
+                </div>
+                <div class="text-xs text-slate-500 font-medium">
+                    Hiển thị <span id="recordCount" class="font-bold text-indigo-600">0</span> buổi học
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto custom-scroll min-h-[350px]">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100/80 text-slate-700 border-b border-slate-200 uppercase tracking-wider font-semibold text-[11px]">
+                            <th class="p-3 w-12 text-center">STT</th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-200 transition" onclick="sortTable('giang_vien')">
+                                Giảng viên <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-200 transition" onclick="sortTable('hoc_vien')">
+                                Học viên <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-200 transition" onclick="sortTable('thu')">
+                                Thứ <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-200 transition" onclick="sortTable('ngay_thang')">
+                                Ngày/Tháng <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-200 transition" onclick="sortTable('gio')">
+                                Khung giờ <i class="fa-solid fa-sort text-slate-400 ml-1"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleTableBody" class="divide-y divide-slate-100">
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-slate-400">
+                                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+                                <p>Đang tải danh sách lịch học...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Pagination -->
+            <div class="p-3 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+                <div class="text-slate-500">
+                    Trang <span id="currentPageNum" class="font-bold text-slate-700">1</span> / <span id="totalPagesNum">1</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="changePage(-1)" id="btnPrevPage" class="px-3 py-1 bg-white border border-slate-300 hover:bg-slate-100 disabled:opacity-50 text-slate-700 font-medium rounded-lg transition">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Trước
+                    </button>
+                    <button onclick="changePage(1)" id="btnNextPage" class="px-3 py-1 bg-white border border-slate-300 hover:bg-slate-100 disabled:opacity-50 text-slate-700 font-medium rounded-lg transition">
+                        Sau <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400">
+        MEC Schedule Table &bull; Dữ liệu nạp từ: <code>analyzed_result.json</code>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        const JSON_FILE_PATH = './analyzed_result.json';
+
+        let rawSchedules = [];
+        let filteredSchedules = [];
+        let currentPage = 1;
+        const pageSize = 15;
+        let sortColumn = 'thu';
+        let sortAsc = true;
+
+        const DAY_MAP = {
+            'T2': 'Thứ 2',
+            'T3': 'Thứ 3',
+            'T4': 'Thứ 4',
+            'T5': 'Thứ 5',
+            'T6': 'Thứ 6',
+            'T7': 'Thứ 7',
+            'CN': 'Chủ nhật'
+        };
+
+        const DAY_ORDER = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadScheduleData();
+        });
+
+        // Nạp file JSON
+        async function loadScheduleData() {
+            const badge = document.getElementById('loadBadge');
+            const errorBox = document.getElementById('errorAlert');
+            errorBox.classList.add('hidden');
+
+            badge.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-xs"></i> Đang tải analyzed_result.json...`;
+            badge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-indigo-800/80 text-indigo-200 border border-indigo-500/30";
+
+            try {
+                const response = await fetch(`${JSON_FILE_PATH}?_t=${Date.now()}`, { cache: 'no-cache' });
+                if (!response.ok) throw new Error(`HTTP ${response.status} (${response.statusText})`);
+
+                const jsonData = await response.json();
+                parseMECData(jsonData);
+
+                badge.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Đã tải ${rawSchedules.length} buổi học`;
+                badge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-emerald-900/60 text-emerald-200 border border-emerald-500/40";
+            } catch (err) {
+                console.error("Lỗi:", err);
+                badge.innerHTML = `<i class="fa-solid fa-xmark text-rose-300"></i> Lỗi nạp file`;
+                badge.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-rose-900/60 text-rose-200 border border-rose-500/40";
+
+                document.getElementById('errorMessage').innerHTML = `
+                    <b>Không thể nạp analyzed_result.json:</b> ${err.message}<br>
+                    <span class="text-slate-500 mt-1 inline-block">Hãy chắc chắn file <code>analyzed_result.json</code> đặt cùng thư mục với HTML và đang chạy qua Web Server.</span>
+                `;
+                errorBox.classList.remove('hidden');
+            }
+        }
+
+        // Parse cấu trúc dữ liệu JSON: GV -> HV -> [Buổi học]
+        function parseMECData(data) {
+            const list = [];
+            let counter = 1;
+
+            for (const teacher in data) {
+                const students = data[teacher];
+                if (!students || typeof students !== 'object') continue;
+
+                for (const student in students) {
+                    const sessions = students[student];
+                    if (!Array.isArray(sessions)) continue;
+
+                    sessions.forEach(item => {
+                        const rawDay = (item.ngay || '').toUpperCase().trim();
+                        const normalizedDay = DAY_MAP[rawDay] || rawDay || 'Chưa rõ';
+                        const timeSlot = (item.gio || '').trim();
+                        const dateStr = (item.ngay_thang || '').trim();
+
+                        list.push({
+                            id: counter++,
+                            giang_vien: teacher.trim(),
+                            hoc_vien: student.trim(),
+                            thu: normalizedDay,
+                            raw_day: rawDay,
+                            ngay_thang: dateStr,
+                            gio: timeSlot,
+                            raw: item
+                        });
+                    });
+                }
+            }
+
+            if (list.length === 0) {
+                throw new Error("Không có buổi học nào được tìm thấy trong cấu trúc JSON.");
+            }
+
+            rawSchedules = list;
+            populateFilters();
+            applyFiltersAndRender();
+        }
+
+        function parseTimeToMinutes(timeStr) {
+            if (!timeStr) return 9999;
+            const match = timeStr.match(/^(\d{1,2})[\.:](\d{2})\s*(AM|PM)/i);
+            if (!match) return 9999;
+            let h = parseInt(match[1], 10);
+            const m = parseInt(match[2], 10);
+            const ampm = match[3].toUpperCase();
+            if (ampm === 'PM' && h < 12) h += 12;
+            if (ampm === 'AM' && h === 12) h = 0;
+            return h * 60 + m;
+        }
+
+        function populateFilters() {
+            const teachers = [...new Set(rawSchedules.map(s => s.giang_vien))].sort();
+            const students = [...new Set(rawSchedules.map(s => s.hoc_vien))].sort();
+
+            const daysFound = new Set(rawSchedules.map(s => s.thu));
+            const days = DAY_ORDER.filter(d => daysFound.has(d));
+
+            const shifts = [...new Set(rawSchedules.map(s => s.gio))].sort((a, b) => {
+                return parseTimeToMinutes(a) - parseTimeToMinutes(b);
+            });
+
+            fillSelect('filterTeacher', teachers, '-- Tất cả Giảng viên --');
+            fillSelect('filterStudent', students, '-- Tất cả Học viên --');
+            fillSelect('filterDay', days, '-- Tất cả các Thứ --');
+            fillSelect('filterShift', shifts, '-- Tất cả Khung giờ --');
+        }
+
+        function fillSelect(elementId, items, placeholder) {
+            const select = document.getElementById(elementId);
+            const currentVal = select.value;
+            select.innerHTML = `<option value="ALL">${placeholder}</option>`;
+            items.forEach(val => {
+                const opt = document.createElement('option');
+                opt.value = val;
+                opt.textContent = val;
+                select.appendChild(opt);
+            });
+            if (items.includes(currentVal)) select.value = currentVal;
+        }
+
+        function resetFilters() {
+            document.getElementById('filterTeacher').value = 'ALL';
+            document.getElementById('filterStudent').value = 'ALL';
+            document.getElementById('filterDay').value = 'ALL';
+            document.getElementById('filterShift').value = 'ALL';
+            document.getElementById('filterKeyword').value = '';
+            applyFiltersAndRender();
+        }
+
+        function applyFiltersAndRender() {
+            const teacherFilter = document.getElementById('filterTeacher').value;
+            const studentFilter = document.getElementById('filterStudent').value;
+            const dayFilter = document.getElementById('filterDay').value;
+            const shiftFilter = document.getElementById('filterShift').value;
+            const keyword = document.getElementById('filterKeyword').value.trim().toLowerCase();
+
+            filteredSchedules = rawSchedules.filter(item => {
+                if (teacherFilter !== 'ALL' && item.giang_vien !== teacherFilter) return false;
+                if (studentFilter !== 'ALL' && item.hoc_vien !== studentFilter) return false;
+                if (dayFilter !== 'ALL' && item.thu !== dayFilter) return false;
+                if (shiftFilter !== 'ALL' && item.gio !== shiftFilter) return false;
+                if (keyword) {
+                    const matchText = `${item.giang_vien} ${item.hoc_vien} ${item.thu} ${item.ngay_thang} ${item.gio}`.toLowerCase();
+                    if (!matchText.includes(keyword)) return false;
+                }
+                return true;
+            });
+
+            currentPage = 1;
+            updateStatistics();
+            sortAndRenderTable();
+        }
+
+        function updateStatistics() {
+            document.getElementById('statTotalSessions').textContent = filteredSchedules.length;
+            const teachers = new Set(filteredSchedules.map(s => s.giang_vien));
+            const students = new Set(filteredSchedules.map(s => s.hoc_vien));
+            document.getElementById('statTotalTeachers').textContent = teachers.size;
+            document.getElementById('statTotalStudents').textContent = students.size;
+
+            const pairCount = {};
+            filteredSchedules.forEach(s => {
+                const pair = `${s.giang_vien} &rarr; ${s.hoc_vien}`;
+                pairCount[pair] = (pairCount[pair] || 0) + 1;
+            });
+            let maxPair = '--';
+            let maxCount = 0;
+            for (const p in pairCount) {
+                if (pairCount[p] > maxCount) {
+                    maxCount = pairCount[p];
+                    maxPair = `${p} (${maxCount} buổi)`;
+                }
+            }
+            document.getElementById('statMaxDensity').innerHTML = maxPair;
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortAsc = !sortAsc;
+            } else {
+                sortColumn = column;
+                sortAsc = true;
+            }
+            sortAndRenderTable();
+        }
+
+        function sortAndRenderTable() {
+            filteredSchedules.sort((a, b) => {
+                let valA = a[sortColumn] || '';
+                let valB = b[sortColumn] || '';
+
+                if (sortColumn === 'thu') {
+                    valA = DAY_ORDER.indexOf(a.thu);
+                    valB = DAY_ORDER.indexOf(b.thu);
+                } else if (sortColumn === 'gio') {
+                    valA = parseTimeToMinutes(a.gio);
+                    valB = parseTimeToMinutes(b.gio);
+                }
+
+                if (valA < valB) return sortAsc ? -1 : 1;
+                if (valA > valB) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('scheduleTableBody');
+            document.getElementById('recordCount').textContent = filteredSchedules.length;
+
+            if (filteredSchedules.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-slate-400">
+                            <i class="fa-solid fa-inbox text-3xl mb-2"></i>
+                            <p>Không tìm thấy lịch học phù hợp với bộ lọc.</p>
+                        </td>
+                    </tr>`;
+                document.getElementById('currentPageNum').textContent = 0;
+                document.getElementById('totalPagesNum').textContent = 0;
+                document.getElementById('btnPrevPage').disabled = true;
+                document.getElementById('btnNextPage').disabled = true;
+                return;
+            }
+
+            const totalPages = Math.ceil(filteredSchedules.length / pageSize);
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const startIdx = (currentPage - 1) * pageSize;
+            const pageData = filteredSchedules.slice(startIdx, startIdx + pageSize);
+
+            tbody.innerHTML = '';
+            pageData.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-indigo-50/50 transition border-b border-slate-100';
+                tr.innerHTML = `
+                    <td class="p-3 text-center text-slate-400 font-mono">${startIdx + index + 1}</td>
+                    <td class="p-3 font-semibold text-slate-800">
+                        <span class="inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-chalkboard-user text-indigo-500 text-xs"></i>
+                            ${item.giang_vien}
+                        </span>
+                    </td>
+                    <td class="p-3 font-medium text-indigo-600">
+                        <span class="inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-graduate text-emerald-500 text-xs"></i>
+                            ${item.hoc_vien}
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <span class="inline-block px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium text-[11px]">
+                            ${item.thu}
+                        </span>
+                    </td>
+                    <td class="p-3 font-mono text-slate-600">${item.ngay_thang || '--'}</td>
+                    <td class="p-3">
+                        <span class="inline-flex items-center gap-1 text-slate-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded text-[11px] font-mono">
+                            <i class="fa-regular fa-clock text-amber-500"></i> ${item.gio}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('currentPageNum').textContent = currentPage;
+            document.getElementById('totalPagesNum').textContent = totalPages;
+            document.getElementById('btnPrevPage').disabled = currentPage === 1;
+            document.getElementById('btnNextPage').disabled = currentPage === totalPages;
+        }
+
+        function changePage(delta) {
+            currentPage += delta;
+            renderTable();
+        }
+
+        function exportCSV() {
+            if (filteredSchedules.length === 0) {
+                alert("Không có dữ liệu để xuất!");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "STT,Giang Vien,Hoc Vien,Thu,Ngay Thang,Khung Gio\n";
+
+            filteredSchedules.forEach((item, index) => {
+                csvContent += `${index + 1},"${item.giang_vien}","${item.hoc_vien}","${item.thu}","${item.ngay_thang}","${item.gio}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "lich_day_MEC.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
