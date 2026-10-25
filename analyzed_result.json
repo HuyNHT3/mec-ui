@@ -84,23 +84,23 @@
   },
   "Mr. Đăng": {
     "Andy": [
-      { "ngay": "Thứ 3", "ngay_thang": "20/10", "gio": "4.00 PM - 6.00 PM" },
-      { "ngay": "Thứ 5", "ngay_thang": "22/10", "gio": "3.00 PM - 5.00 PM" }
+      { "ngay": "T3", "ngay_thang": "20/10", "gio": "4.00 PM - 6.00 PM" },
+      { "ngay": "T5", "ngay_thang": "22/10", "gio": "3.00 PM - 5.00 PM" }
     ],
     "Như Ngọc - Mỹ Nhân": [
-      { "ngay": "Thứ 2", "ngay_thang": "19/10", "gio": "8.00 AM - 10.00 AM" },
-      { "ngay": "Thứ 6", "ngay_thang": "23/10", "gio": "8.00 AM - 10.00 AM" }
+      { "ngay": "T2", "ngay_thang": "19/10", "gio": "8.00 AM - 10.00 AM" },
+      { "ngay": "T6", "ngay_thang": "23/10", "gio": "8.00 AM - 10.00 AM" }
     ],
     "Công Thành": [
-      { "ngay": "Thứ 7", "ngay_thang": "24/10", "gio": "4.20 PM - 6.20 PM" },
-      { "ngay": "Chủ nhật", "ngay_thang": "25/10", "gio": "8.00 AM - 10.00 AM" }
+      { "ngay": "T7", "ngay_thang": "24/10", "gio": "4.20 PM - 6.20 PM" },
+      { "ngay": "CN", "ngay_thang": "25/10", "gio": "8.00 AM - 10.00 AM" }
     ],
     "Ms Tuyết": [
-      { "ngay": "Thứ 3", "ngay_thang": "20/10", "gio": "7.00 AM - 9.00 AM" }
+      { "ngay": "T3", "ngay_thang": "20/10", "gio": "7.00 AM - 9.00 AM" }
     ],
     "Thảo Vy": [
-      { "ngay": "Thứ 5", "ngay_thang": "22/10", "gio": "6.00 PM - 8.00 PM" },
-      { "ngay": "Thứ 6", "ngay_thang": "23/10", "gio": "6.00 PM - 8.00 PM" }
+      { "ngay": "T5", "ngay_thang": "22/10", "gio": "6.00 PM - 8.00 PM" },
+      { "ngay": "T6", "ngay_thang": "23/10", "gio": "6.00 PM - 8.00 PM" }
     ]
   },
   "Mr. Thành": {
